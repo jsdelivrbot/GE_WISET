@@ -1,0 +1,21 @@
+[
+  {
+    "filter": "parent=/group/root",
+    "parent": "/group/root",
+    "description": "경기도",
+    "uri": "/group/enterprise-predix",
+    "level": "enterprise",
+    "name": "Predix Energy"
+  },
+  {
+    "filter": "parent=/group/enterprise-predix",
+    "parent": "/group/enterprise-predix",
+    "description": "성남시",
+    "uri": "/group/plant-richmond-refinery",
+    "level": "plant",
+    "name": "Richmond Refinery 1"
+  }
+
+]
+
+

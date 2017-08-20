@@ -1,0 +1,54 @@
+{
+  "name": "px-percent-circle",
+  "version": "1.0.4",
+  "main": [
+    "px-percent-circle.html"
+  ],
+  "ignore": [
+    "*.enc",
+    ".*",
+    "npm-debug.log",
+    "gulpfile.js",
+    "sass",
+    "bower_components",
+    "node_modules",
+    "test",
+    "scripts",
+    ".github",
+    "px-percent-circle.png",
+    "HISTORY.md",
+    "CONTRIBUTING.md",
+    "OSS_Notice.pdf",
+    ".editorconfig",
+    ".jshint",
+    ".gitignore",
+    "LICENSE.md",
+    "gulpfile.js",
+    "monogram-wdmk.png",
+    "README.md",
+    "wct.conf.json"
+  ],
+  "dependencies": {
+    "polymer": "^1.9.0"
+  },
+  "devDependencies": {
+    "px-normalize-design": "^1.0.0",
+    "px-box-sizing-design": "^1.0.0",
+    "px-demo": "^2.0.0",
+    "px-theme": "^3.0.0"
+  },
+  "resolutions": {
+    "webcomponentsjs": "^0.7.24"
+  },
+  "homepage": "https://github.com/predixdev/px-percent-circle",
+  "_release": "1.0.4",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.0.4",
+    "commit": "af5139566e60336758cae3b90890fd5f725b1d72"
+  },
+  "_source": "https://github.com/predixdev/px-percent-circle.git",
+  "_target": "^1.0.4",
+  "_originalSource": "px-percent-circle",
+  "_direct": true
+}

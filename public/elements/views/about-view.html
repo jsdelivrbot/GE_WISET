@@ -1,0 +1,141 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/px-view-header/px-view-header.html">
+<link rel="import" href="../../bower_components/px-card/px-card.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/marked-element/marked-element.html">
+<link rel="import" href="../../bower_components/px-map/px-map.html" />
+<link rel="import" href="../../bower_components/px-map/px-map-tile-layer.html" />
+<link rel="import" href="../../bower_components/px-dropdown/px-dropdown.html" />
+<link rel="import" href="../../bower_components/px-data-table/px-data-table.html" />
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/px-percent-circle/px-percent-circle.html"/>
+
+<dom-module id="about-view">
+  <template>
+
+    <px-card id="myCard" header-text="지역 검색">
+    <div>
+      <px-dropdown display-value="Text" style="float:left; width:200px" >
+        <px-dropdown-content class="px-dropdown-content" max-cont-character-width="10"
+                             extend-dropdown="true" extend-dropdown-by="15" items='[{"key":"서울특별시", "val": "서울특별시"}, {"key":"경기도", "val": "경기도"}, {"key":"충청남도", "val": "충청남도"}, {"key":"충청북도", "val": "충청북도"}]'>
+        </px-dropdown-content>
+      </px-dropdown>
+      <px-dropdown display-value="Text" style="float:left; width:200px">
+        <px-dropdown-content class="px-dropdown-content" max-cont-character-width="10"
+                             extend-dropdown="true" extend-dropdown-by="15" items='[{"key":"강남구", "val": "강남구"}, {"key":"서초구", "val": "서초구"}, {"key":"용산구", "val": "용산구"}, {"key":"성북구", "val": "성북구"}]'>
+        </px-dropdown-content>
+      </px-dropdown>
+    </div>
+    </px-card>
+
+      <div style="width:65%; float:left">
+      <px-card id="myCard" header-text="지도로 보기" >
+        <style is="custom-style">
+        </style>
+        <div style="height:200px;width:600px;display:flex">
+          <px-map zoom="12" lat="37.56417412088097" lng="-233.0234527587891" flex-to-size="true">
+            <px-map-tile-layer url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'>
+          </px-map>
+       </div>
+      </px-card>
+      </div>
+
+      <div style="width:35%; float:left">
+      <px-card id="myCard" header-text="전체 상태" >
+        <div style="width:200px"> <px-percent-circle val="95" max="100" thickness="30"></px-percent-circle></div>
+      </px-card>
+      </div>
+
+ <div>
+    <px-card header-text="Automobile List " icon="fa-sitemap">
+      <h3>{{assetDescription}}</h3>
+      <px-data-table table-data="{{assetTableData}}">
+      </px-data-table>
+    </px-card>
+    </div>
+    <iron-ajax url="/mock-api/predix-asset/asset?filter=group=/group/plant-richmond-refinery" id="assetQueryElement" last-response="{{rawAssetData}}" auto></iron-ajax>
+
+    <!--<px-card id="myCard" header-text="About this application">
+      <style is="custom-style">
+        div.markdown-html > h2 {
+          margin-top: 0;
+        }
+      </style>
+      <div>
+        <marked-element id="aboutContentMarkdown" markdown="">
+          <div class="markdown-html"></div>
+        </marked-element>      </div>
+    </px-card>
+    <iron-ajax id="aboutContentAjaxEl" handle-as="text"></iron-ajax>-->
+  </template>
+  <script>
+
+    Polymer({
+        is: 'about-view',
+        properties: {
+            tsChartData: {
+                type: Array
+            },
+            rawAssetData: {
+                type: Object,
+                observer: '_formatDataForTable'
+            },
+            assetTableData: {
+                type: Object
+            },
+            assetDescription: {
+                type: String
+            }
+        },
+
+        _formatDataForTable: function(raw) {
+            if (raw[0].assetTag) {
+                this._formatAssetTagsForTable(raw);
+            } else {
+                this._formatEngineDataForTable(raw);
+            }
+        },
+
+        _formatAssetTagsForTable: function(raw) {
+            var sensor, sensors = [];
+            var assetTags = raw[0].assetTag;
+            for (var property in assetTags) {
+                if (assetTags.hasOwnProperty(property)) {
+                    sensor = assetTags[property];
+                    delete sensor.complexType;
+                    delete sensor.tagDatasource;
+                    sensors.push(sensor);
+                }
+            }
+            this.assetTableData = sensors;
+            this.assetDescription = raw[0].description + ": " + raw[0].assetId;
+        },
+
+        _formatEngineDataForTable: function(raw) {
+            raw.forEach(function(engine) {
+                engine.partUri = engine.jetEnginePart.uri;
+                engine.partSerialNo = engine.jetEnginePart.sNo;
+                delete engine.jetEnginePart;
+            })
+            this.assetTableData = raw;
+            this.assetDescription = "Jet Engines";
+        }
+    });
+
+    //Polymer({
+    //    is: 'about-view',
+    //    properties: {},
+    //    ready: function() {
+    //        var that = this;
+    //        this.$.aboutContentAjaxEl.url = "/docs";
+
+    //       this.$.aboutContentAjaxEl.addEventListener('response', function(evt) {
+    //            that.$.aboutContentMarkdown.markdown = evt.detail.response;
+    //        });
+    //        this.$.aboutContentAjaxEl.generateRequest();
+    //    }
+    //});
+
+  </script>
+
+</dom-module>
